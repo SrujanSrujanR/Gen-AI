@@ -1,5 +1,5 @@
 import gensim.downloader as api
-import numpy as np
+from sklearn.decomposition import PCA
 import matplotlib.pyplot as plt
 
 # Load pre-trained Word2Vec model
@@ -27,12 +27,10 @@ for word, similarity in similar_words:
     print(f"{word}: {similarity}")
 
 # -----------------------------
-# Visualization using PCA (NumPy SVD)
+# Visualization using PCA
 # -----------------------------
-word_matrix = np.array(vectors)
-word_matrix -= word_matrix.mean(axis=0)
-_, _, vt = np.linalg.svd(word_matrix, full_matrices=False)
-reduced_vectors = word_matrix @ vt[:2].T
+pca = PCA(n_components=2)
+reduced_vectors = pca.fit_transform(vectors)
 
 plt.figure(figsize=(6, 6))
 plt.scatter(reduced_vectors[:, 0], reduced_vectors[:, 1])
